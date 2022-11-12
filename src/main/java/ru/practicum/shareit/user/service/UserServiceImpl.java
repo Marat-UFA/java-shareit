@@ -10,7 +10,7 @@ import java.util.*;
 
 @Slf4j
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private Map<Long, User> userRepository = new HashMap<>();
     private Set email = new HashSet<>();
@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService{
         log.debug("Преобразовываем Dto объект в обычного user");
         User user = UserMapper.toUser(userDto);
         log.debug("Проверяем существует ли такой email");
-        if (email.contains(user.getEmail())){
+        if (email.contains(user.getEmail())) {
             throw new RuntimeException("Данный email уже зарегистрирован");//
         } else {
             log.debug("Создаем нового пользователя");
@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService{
             throw new RuntimeException("данный email зарегистрирован на другого пользователя");
         }
         for (Long usersId : userRepository.keySet()) {
-            if (usersId == userId){
+            if (usersId == userId) {
                 if ((user.getName() != null)) {
                     userRepository.get(userId).setName(user.getName());
                 }
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserDto getUserById(long userId) {
-        if (!userRepository.containsKey(userId)){
+        if (!userRepository.containsKey(userId)) {
             return null;
         }
         return UserMapper.toUserDto(userRepository.get(userId));
