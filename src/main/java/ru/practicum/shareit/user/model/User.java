@@ -19,5 +19,6 @@ public class User {
     @Email
     @NotNull
     private String email;
+    @Pattern(regexp = "^[a-z][a-zA-Z0-9]*$")
     List<Item> ListOfItem;
 }
