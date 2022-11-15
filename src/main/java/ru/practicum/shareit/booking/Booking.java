@@ -13,10 +13,10 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 public class Booking {
-    transient int id;
-    LocalDate start;
-    LocalDate end;
-    Item item;
-    User booker;
-    String status;
+    private int id;
+    private LocalDate start;
+    private LocalDate end;
+    private Item item;
+    private User booker;
+    private String status;
 }

@@ -38,7 +38,6 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto create(long ownerId, ItemDto itemDto) throws ValidationException {
-        log.debug("Преобразовываем Dto объект в обычный item, при создании новой вещи");
 
         Item item = itemMapper.toItem(itemDto);
         User user = userMapper.toUser(userService.getUserById(ownerId));
@@ -55,7 +54,6 @@ public class ItemServiceImpl implements ItemService {
         if (item.getAvailable() == null) {
             throw new ValidationException("Не указан статус доступа вещи");
         }
-        log.debug("Ошибка сервера при создании уже существующей вещи");
 
         for (Item items : itemRepository.values()) {
             if ((items.getOwner() == ownerId) && items.getName().equals(item.getName())) {
@@ -63,31 +61,25 @@ public class ItemServiceImpl implements ItemService {
             }
         }
 
-        log.debug("Создаем новую вещь");
         id += 1;
         item.setId(id);
-        log.debug("Добавляем вещь в список вещей пользователя");
         if (user.getListOfItem() == null) {
             user.setListOfItem(new ArrayList<>());
             user.getListOfItem().add(item);
         } else {
             user.getListOfItem().add(item);
         }
-        log.debug("Обновляем пользователя в хранилище мапе пользователей");
         UserDto userDto = userMapper.toUserDto(user);
         userService.update(ownerId, userDto);
         userDto.setListOfItem(null);
         item.setOwner(userMapper.toUser(userDto).getId());
-        log.debug("Помещаем созданную вещи в мапу хранилище");
         itemRepository.put(id, item);
-        log.debug("Возвращаем Dto при создании новой вещи");
         return itemMapper.toItemDto(itemRepository.get(id));
 //        }
     }
 
     @Override
     public ItemDto update(long ownerId, long itemId, ItemDto itemDto) {
-        log.debug("Преобразовываем Dto объект в обычный item");
 
         Item item = itemMapper.toItem(itemDto);
         User user = userMapper.toUser(userService.getUserById(ownerId));
@@ -137,7 +129,6 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDto> search(String text) {
-        log.debug("Возвращаем список доступных вещей для аренды по поиску 'ключевому слово'");
         if (text.isEmpty()) {
             return new ArrayList<>();
         }

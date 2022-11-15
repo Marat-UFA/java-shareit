@@ -19,5 +19,5 @@ public class UserDto {
     @Email
     @NotNull
     private String email;
-    List<Item> listOfItem;
+    private List<Item> listOfItem;
 }

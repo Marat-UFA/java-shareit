@@ -18,25 +18,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto create(UserDto userDto) {
-        log.debug("Преобразовываем Dto объект в обычного user");
+
         User user = UserMapper.toUser(userDto);
-        log.debug("Проверяем существует ли такой email");
         if (email.contains(user.getEmail())) {
             throw new RuntimeException("Данный email уже зарегистрирован");//
         } else {
-            log.debug("Создаем нового пользователя");
             id += 1;
             user.setId(id);
             userRepository.put(id, user);
             email.add(user.getEmail());
-            log.debug("Возвращаем нового пользователя в DtoUser");
             return UserMapper.toUserDto(userRepository.get(id));
         }
     }
 
     @Override
     public UserDto update(long userId, UserDto userDto) {
-        log.debug("Преобразовываем Dto объект в обычного user");
         userDto.setId(userId);
         User user = UserMapper.toUser(userDto);
         if (email.contains(user.getEmail()) && userRepository.get(userId).getEmail() != user.getEmail()) {
